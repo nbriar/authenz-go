@@ -12,8 +12,6 @@ import (
 	"github.com/nbriar/authenz/token"
 )
 
-
-
 func init() {
 	// TODO set these from the environment
 	db, err := gorm.Open("postgresql", "host=localhost dbname=authenz_dev")
@@ -31,17 +29,11 @@ func main() {
 
 func router() http.Handler {
 	r := chi.NewRouter()
-	tokenAuth := token.TokenAuth
 	// Protected routes
 	r.Group(func(r chi.Router) {
 		// Seek, verify and validate JWT tokens
-		r.Use(jwtauth.Verifier(tokenAuth))
-
-		// Handle valid / invalid tokens. In this example, we use
-		// the provided authenticator middleware, but you can write your
-		// own very easily, look at the Authenticator method in jwtauth.go
-		// and tweak it, its not scary.
-		r.Use(jwtauth.Authenticator)
+		r.Use(token.Verifier())
+		r.Use(token.Authenticator)
 
 		r.Get("/admin", func(w http.ResponseWriter, r *http.Request) {
 			_, claims, _ := jwtauth.FromContext(r.Context())
