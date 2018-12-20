@@ -5,8 +5,8 @@ import (
 
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/go-chi/jwtauth"
-	"github.com/nbriar/authenz/configuration"
-	"github.com/nbriar/authenz/user"
+	"github.com/nbriar/authenz-go/configuration"
+	"github.com/nbriar/authenz-go/user"
 )
 
 // Auth is the model for authenticating the jwt

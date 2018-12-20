@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"encoding/json"
 	"net/http"
 
 	"github.com/go-chi/chi"
@@ -9,7 +10,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 
-	"github.com/nbriar/authenz/token"
+	"github.com/nbriar/authenz-go/token"
 )
 
 func init() {
@@ -43,9 +44,20 @@ func router() http.Handler {
 
 	// Public routes
 	r.Group(func(r chi.Router) {
+		r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+			w.Write([]byte("Welcome Anonymous"))
+		})
 		// Register a user with an auth strategy
 		r.Post("/user", func(w http.ResponseWriter, r *http.Request) {
-			w.Write([]byte("welcome anonymous"))
+			decoder := json.NewDecoder(r.Body)
+			var data myData
+			err := decoder.Decode(&data)
+			if err != nil {
+				panic(err)
+			}
+
+			fmt.Println()
+			w.Write([]byte("a user was created"))
 		})
 	})
 

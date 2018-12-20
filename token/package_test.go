@@ -2,7 +2,7 @@ package token
 
 import (
 	"testing"
-	"github.com/nbriar/authenz/user"
+	"github.com/nbriar/authenz-go/user"
 	"github.com/stretchr/testify/assert"
 )
 
