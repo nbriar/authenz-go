@@ -2,6 +2,9 @@ COMPLEXITY_THRESHOLD ?= 25
 GO_PACKAGES ?= $$(go list ./... | grep -v /vendor/ | grep -v /tmp )
 
 export
+start:
+	go run ./main.go
+
 cover:
 	bash ./scripts/coverage.sh
 
@@ -12,7 +15,7 @@ lint:
 	bash ./scripts/lint.sh
 
 tests:
-	go test $(GO_PACKAGES)
+	go test -v $(GO_PACKAGES)
 
 vet:
 	go vet $(GO_PACKAGES)

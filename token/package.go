@@ -1,8 +1,6 @@
 package token
 
 import (
-	"fmt"
-
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/go-chi/jwtauth"
 	"github.com/nbriar/authenz-go/configuration"
@@ -18,7 +16,9 @@ func init() {
 	// For debugging/example purposes, we generate and print
 	// a sample jwt token with claims `sub:123` here:
 	_, tokenString, _ := Auth.Encode(jwt.MapClaims{"sub": 123})
-	fmt.Printf("DEBUG: a sample jwt is %s\n\n", tokenString)
+	if tokenString == "" {
+		panic("JWT is not encoding correcty!")
+	}
 }
 
 // Token contains a JWT which can be encoded and decoded and is attached to a session

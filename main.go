@@ -2,25 +2,21 @@ package main
 
 import (
 	"fmt"
-	"encoding/json"
 	"net/http"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/jwtauth"
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/postgres"
 
+	"github.com/nbriar/authenz-go/handlers"
 	"github.com/nbriar/authenz-go/token"
 )
 
-func init() {
-	// TODO set these from the environment
-	db, err := gorm.Open("postgresql", "host=localhost dbname=authenz_dev")
-	if err != nil {
-		panic("failed to connect database")
-	}
-	defer db.Close()
-}
+// var db *gorm.DB
+
+// func init() {
+// 	db = repo.DBRepo
+// 	defer db.Close()
+// }
 
 func main() {
 	addr := ":3333"
@@ -45,20 +41,10 @@ func router() http.Handler {
 	// Public routes
 	r.Group(func(r chi.Router) {
 		r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-			w.Write([]byte("Welcome Anonymous"))
+			w.Write([]byte("Welcome To Authenz Go"))
 		})
 		// Register a user with an auth strategy
-		r.Post("/user", func(w http.ResponseWriter, r *http.Request) {
-			decoder := json.NewDecoder(r.Body)
-			var data myData
-			err := decoder.Decode(&data)
-			if err != nil {
-				panic(err)
-			}
-
-			fmt.Println()
-			w.Write([]byte("a user was created"))
-		})
+		r.Post("/user", handlers.CreateUser)
 	})
 
 	return r

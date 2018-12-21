@@ -1,3 +1,5 @@
+# Empty the profile.cov file if it exists
+[ -e 'profile.cov' ] && >| 'profile.cov'
 # Iterate through each package and run tests with coverage enabled
 echo "mode: count" >> profile.cov
 threshold=${COVERAGE_THRESHOLD:-70}
@@ -33,14 +35,15 @@ then
 	exit 1
 fi
 
+
 # Analyze that coverage!
 echo "Analyzing test coverage!"
-go tool cover -func profile.cov
-echo "Done analyzing"
 coverage=`go tool cover -func profile.cov | grep total | awk '{print $3}'`
+echo "Done analyzing"
 coverage_int=`echo $coverage | awk -F\. '{print $1}'`
 echo "Total Test Coverage: $coverage"
 echo "Target Coverage Threshold: $threshold%"
+
 if (( $coverage_int < $threshold ))
 then
     echo "Error: Test coverage of $coverage is below threshold of $threshold%!"

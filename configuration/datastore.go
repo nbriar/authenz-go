@@ -2,6 +2,13 @@ package configuration
 
 import "os"
 
+// DB is the configuration for the datastore
+var DB DBConfig
+
+func init() {
+	DB = GetDBConfig()
+}
+
 // DBConfig is the configuration struct for the datastore
 type DBConfig struct {
 	Adapter    string
@@ -35,6 +42,9 @@ func GetDBConfig() DBConfig {
 	}
 	if c.DBName == "" {
 		c.DBName = "authenz_dev"
+	}
+	if c.DBPassword == "" {
+		c.DBPassword = ""
 	}
 	if c.SslMode == "" {
 		c.SslMode = "disable"
